@@ -6,28 +6,36 @@ namespace ApiTonic.Application.DataTransfer.Excel.ClosedXml
     public class ExcelWorkbook : IExcelWorkbook, IDisposable
     {
         private XLWorkbook xlWorkbook;
+        private ExcelValidator excelValidator;
         private bool disposedValue;
 
         public IReadOnlyDictionary<string, IExcelWorksheet> Worksheets { get; }
 
-        public ExcelWorkbook()
+        public ExcelWorkbook(ExcelValidator excelValidator)
         {
             xlWorkbook = new XLWorkbook();
             Worksheets = new Dictionary<string, IExcelWorksheet>();
+            this.excelValidator = excelValidator;
         }
 
         public IExcelWorksheet AddWorksheet(string name)
         {
-            var worksheet = new ExcelWorksheet(xlWorkbook.AddWorksheet(name));
+            var worksheet = new ExcelWorksheet(xlWorkbook.AddWorksheet(name), excelValidator);
 
             Worksheets.Append(new KeyValuePair<string, IExcelWorksheet>(name, worksheet));
 
             return worksheet;
         }
 
-        public void SaveAs(string fileName)
+        public string SaveAs()
         {
-            xlWorkbook.SaveAs(fileName);
+            using (var stream = new MemoryStream())
+            {
+                xlWorkbook.SaveAs(stream);
+
+                var bytes = stream.ToArray();
+                return Convert.ToBase64String(bytes);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

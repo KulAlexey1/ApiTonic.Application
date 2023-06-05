@@ -10,9 +10,8 @@ namespace ApiTonic.Application.DataTransfer
         public static void AddDataTransferServices(this IServiceCollection services)
         {
             services.AddScoped<IExcelWorkbook, ExcelWorkbook>();
-            services.AddScoped<IExcelWorksheet, ExcelWorksheet>();
-            services.AddScoped<IExcelCell, ExcelCell>();
             services.AddScoped<IExcelFileBuilder, ExcelFileBuilder>();
+            services.AddScoped<ExcelValidator>();
         }
     }
 }

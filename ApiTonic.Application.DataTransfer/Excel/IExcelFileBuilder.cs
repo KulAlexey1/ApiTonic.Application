@@ -2,6 +2,6 @@
 {
     public interface IExcelFileBuilder
     {
-        string BuildExcelFileUrl(string fileName, IDictionary<string, string> cellTextDict);
+        string BuildBase64(IDictionary<string, string> cellTextDict);
     }
 }

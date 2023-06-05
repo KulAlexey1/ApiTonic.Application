@@ -4,6 +4,8 @@
     {
         IReadOnlyDictionary<string, IExcelWorksheet> Worksheets { get; }
         IExcelWorksheet AddWorksheet(string name);
-        void SaveAs(string fileName);
+
+        /// <returns>Base64 string</returns>
+        string SaveAs();
     }
 }

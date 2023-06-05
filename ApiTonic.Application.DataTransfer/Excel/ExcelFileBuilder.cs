@@ -11,20 +11,16 @@ namespace ApiTonic.Application.DataTransfer.Excel
             this.workbook = workbook;
         }
 
-        public string BuildExcelFileUrl(string fileName, IDictionary<string, string> cellTextDict)
+        public string BuildBase64(IDictionary<string, string> cellTextDict)
         {
-            // use dict to add cells values
-            //add path to store files to appSettings
-            //create model for the paths
-            // inject the model here
-            // use path to SaveAs
-            // validate fileName contains only name
-            // delete th
-
             var worksheet = workbook.AddWorksheet("Sheet 1");
-            workbook.SaveAs(fileName + ".xlsx");
 
-            return "/TEST";
+            foreach(var cellText in cellTextDict)
+            {
+                worksheet[cellText.Key].Text = cellText.Value;
+            }
+
+            return workbook.SaveAs();
         }
     }
 }
